@@ -1,0 +1,27 @@
+Analiza las historias de usuario recibidas.
+
+Devuelve EXCLUSIVAMENTE JSON válido.
+
+Formato:
+
+[
+  {
+    "id": "HU-001",
+    "title": "Título",
+    "body": "Markdown completo",
+    "labels": [
+      "feature"
+    ]
+  }
+]
+
+Reglas:
+
+- Un issue por cada HU.
+- Mantén los criterios de aceptación.
+- Genera una descripción profesional.
+- El body debe estar en Markdown.
+- No generes texto fuera del JSON.
+- No incluyas explicaciones.
+- No uses bloques markdown.
+- Devuelve únicamente un array JSON válido.

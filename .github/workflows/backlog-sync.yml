@@ -1,0 +1,62 @@
+name: backlog-sync
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - backlog/backlog.md
+      - scripts/generate_issues.py
+      - scripts/prompt.txt
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  sync-backlog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Write GitHub App private key
+        shell: bash
+        env:
+          APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
+        run: |
+          python - << 'PY'
+          import os
+
+          key = os.environ["APP_PRIVATE_KEY"].strip()
+
+          # Soporta secretos pegados en una sola linea con "\\n" literal.
+          if "\\n" in key and "-----BEGIN" in key:
+              key = key.replace("\\n", "\n")
+
+          with open("github-app.pem", "w", encoding="utf-8") as f:
+              f.write(key)
+              if not key.endswith("\n"):
+                  f.write("\n")
+          PY
+
+      - name: Run backlog sync
+        env:
+          MODELS_TOKEN: ${{ secrets.MODELS_TOKEN }}
+          APP_ID: ${{ secrets.APP_ID }}
+          INSTALLATION_ID: ${{ secrets.INSTALLATION_ID }}
+          OWNER: ${{ secrets.OWNER }}
+          REPO: ${{ secrets.REPO }}
+        run: python scripts/generate_issues.py
+
+
+

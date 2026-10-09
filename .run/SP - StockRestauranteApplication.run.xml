@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="SP - StockRestauranteApplication" type="Application" factoryName="Application">
+    <option name="ALTERNATIVE_JRE_PATH" value="temurin-25" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <envs>
+      <env name="spring.profiles.active" value="sp" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="com.campusdual.stockrestaurante.StockRestauranteApplication" />
+    <module name="stockrestaurante-boot" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

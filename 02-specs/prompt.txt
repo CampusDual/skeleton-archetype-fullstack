@@ -1,0 +1,14 @@
+Actúa como Product Manager senior.
+
+A partir de este documento discovery,
+genera una especificación funcional completa.
+
+Incluye:
+
+- Contexto
+- Objetivos
+- Casos de uso
+- Requisitos funcionales
+- Requisitos no funcionales
+- Criterios de aceptación
+- Riesgos
