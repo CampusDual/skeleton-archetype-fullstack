@@ -20,11 +20,11 @@
     <description>Proyecto multi-modulo base para Stock Restaurante</description>
 
     <modules>
-        <module>stockrestaurante-api</module>
-        <module>stockrestaurante-model</module>
-        <module>stockrestaurante-ws</module>
-        <module>stockrestaurante-openapi</module>
-        <module>stockrestaurante-boot</module>
+        <module>skeleton-fullstack-api</module>
+        <module>skeleton-fullstack-model</module>
+        <module>skeleton-fullstack-ws</module>
+        <module>skeleton-fullstack-openapi</module>
+        <module>skeleton-fullstack-boot</module>
     </modules>
 
     <properties>

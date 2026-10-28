@@ -68,11 +68,11 @@ jobs:
           rm -rf .run/
           rm -rf .local/
           rm -rf target/
-          rm -rf stockrestaurante-boot/.local/
-          rm -rf stockrestaurante-frontend/.angular/
-          rm -rf stockrestaurante-frontend/dist/
-          rm -rf stockrestaurante-frontend/node_modules/
-          rm -rf stockrestaurante-frontend/.vscode/
+          rm -rf skeleton-fullstack-boot/.local/
+          rm -rf skeleton-fullstack-frontend/.angular/
+          rm -rf skeleton-fullstack-frontend/dist/
+          rm -rf skeleton-fullstack-frontend/node_modules/
+          rm -rf skeleton-fullstack-frontend/.vscode/
           rm -rf README.md
           mv HELP.md README.md
       - name: Generate archetype from project
@@ -88,12 +88,12 @@ jobs:
         run: |
           cd target/generated-sources/archetype
           FRONTEND_TEMPLATE_ROOT="src/main/resources/archetype-resources/__artifactId__-frontend"
-          mv src/main/resources/archetype-resources/stockrestaurante-frontend "${FRONTEND_TEMPLATE_ROOT}"
-          sed -i 's#stockrestaurante-frontend#__artifactId__-frontend#g' src/main/resources/META-INF/maven/archetype-metadata.xml
+          mv src/main/resources/archetype-resources/skeleton-fullstack-frontend "${FRONTEND_TEMPLATE_ROOT}"
+          sed -i 's#skeleton-fullstack-frontend#__artifactId__-frontend#g' src/main/resources/META-INF/maven/archetype-metadata.xml
           xmlstarlet ed --inplace -N x=http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.2.0 -i "/x:archetype-descriptor/x:fileSets/x:fileSet[x:directory='__artifactId__-frontend']" -t attr -n "filtered" -v "true" src/main/resources/META-INF/maven/archetype-metadata.xml
-          sed -i 's/stockrestaurante-frontend/\${artifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/package.json"
-          sed -i 's/stockrestaurante-frontend/\${artifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/package-lock.json"
-          sed -i 's/stockrestaurante-frontend/\${artifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/angular.json"
+          sed -i 's/skeleton-fullstack-frontend/\${artifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/package.json"
+          sed -i 's/skeleton-fullstack-frontend/\${artifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/package-lock.json"
+          sed -i 's/skeleton-fullstack-frontend/\${artifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/angular.json"
       - name: Generate deploy pom.xml with xmlstarlet
         run: |
           cd target/generated-sources/archetype
