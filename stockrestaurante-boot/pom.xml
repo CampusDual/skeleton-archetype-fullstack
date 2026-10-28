@@ -16,7 +16,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.campusdual</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>stockrestaurante-ws</artifactId>
             <version>${project.version}</version>
         </dependency>

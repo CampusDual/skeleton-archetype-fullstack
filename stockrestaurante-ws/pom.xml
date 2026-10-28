@@ -16,12 +16,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.campusdual</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>stockrestaurante-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.campusdual</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>stockrestaurante-model</artifactId>
             <version>${project.version}</version>
         </dependency>

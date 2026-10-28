@@ -2,7 +2,7 @@ spring:
   application:
     name: stock-restaurante
   datasource:
-    url: jdbc:hsqldb:mem:stockdb;sql.syntax_pgs=true
+    url: jdbc:hsqldb:mem:appdb;sql.syntax_pgs=true
     username: sa
     password:
     driver-class-name: org.hsqldb.jdbc.JDBCDriver

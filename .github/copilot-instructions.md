@@ -78,7 +78,8 @@ Un cambio se considera completo cuando incluye:
 
 # Mantenimiento de OpenAPI (openapi-copilot.yaml)
 - SIEMPRE que crees o modifiques controladores REST, DTOs, endpoints o manejo de excepciones:
-  - Genera o actualiza el archivo `stockrestaurante-openapi/src/main/resources/openapi-copilot.yaml` (esta es la ruta obligatoria y unica).
+  - Genera o actualiza el archivo `<modulo-openapi>/src/main/resources/openapi-copilot.yaml` (esta es la ruta obligatoria y unica).
+  - Convención recomendada en proyectos generados desde este arquetipo: `<artifactId>-openapi/src/main/resources/openapi-copilot.yaml`.
   - NO dependas de la salida de Springdoc ni intentes levantar el servicio para obtener el YAML.
   - El fichero `openapi-copilot.yaml` DEBE incluir de forma exhaustiva:
     1. Casos de éxito (200, 201, 204) con esquemas de respuesta completos.
@@ -116,23 +117,27 @@ Si una regla de este documento no puede cumplirse, el registro del cambio debe i
 
 ### Raíz del repositorio
 ```
-stock-restaurante/
-├── stockrestaurante-api/        ← Interfaces Java de los servicios (contratos)
-├── stockrestaurante-boot/       ← Arranque de Spring Boot (main, configuración)
-├── stockrestaurante-frontend/   ← Proyecto Angular
-├── stockrestaurante-model/      ← Entidades, DTOs, repositorios y servicios
-├── stockrestaurante-openapi/    ← Especificación OpenAPI (YAML) y generación de modelos
-├── stockrestaurante-ws/         ← Controladores REST (@RestController)
+<project-root>/
+├── <artifactId>-api/            ← Interfaces Java de los servicios (contratos)
+├── <artifactId>-boot/           ← Arranque de Spring Boot (main, configuración)
+├── <artifactId>-frontend/       ← Proyecto Angular
+├── <artifactId>-model/          ← Entidades, DTOs, repositorios y servicios
+├── <artifactId>-openapi/        ← Especificación OpenAPI (YAML) y generación de modelos
+├── <artifactId>-ws/             ← Controladores REST (@RestController)
 ├── backlog/
 ├── scripts/
 └── README.md
 ```
 
-### stockrestaurante-model
-Paquete base: `com.campusdual.stockrestaurante.model`
+**Ejemplo de instancia concreta**:
+- `<project-root>` = `stock-restaurante`
+- `<artifactId>` = `stockrestaurante`
+
+### Módulo model (`<artifactId>-model`)
+Paquete base recomendado: `<base.package>.model`
 
 ```
-src/main/java/com/campusdual/stockrestaurante/model/
+src/main/java/<base/package>/model/
 ├── entity/       ← Entidades JPA (@Entity)
 ├── dto/          ← Objetos de transferencia de datos
 ├── repository/   ← Acceso a datos con JPA (@Repository)
@@ -140,40 +145,40 @@ src/main/java/com/campusdual/stockrestaurante/model/
 └── exception/    ← Excepciones personalizadas y manejo de errores
 ```
 
-### stockrestaurante-api
-Paquete base: `com.campusdual.stockrestaurante.api`
+### Módulo api (`<artifactId>-api`)
+Paquete base recomendado: `<base.package>.api`
 
 ```
-src/main/java/com/campusdual/stockrestaurante/api/
+src/main/java/<base/package>/api/
 └── service/      ← Interfaces de los servicios (contratos sin implementación)
 ```
 
-### stockrestaurante-ws
-Paquete base: `com.campusdual.stockrestaurante.ws`
+### Módulo ws (`<artifactId>-ws`)
+Paquete base recomendado: `<base.package>.ws`
 
 ```
-src/main/java/com/campusdual/stockrestaurante/ws/
+src/main/java/<base/package>/ws/
 └── controller/   ← Endpoints REST (@RestController)
 ```
 
-### stockrestaurante-openapi
+### Módulo openapi (`<artifactId>-openapi`)
 ```
 src/main/resources/
 └── openapi.yaml  ← Especificación OpenAPI de la API REST
 ```
 
-### stockrestaurante-boot
-Paquete base: `com.campusdual.stockrestaurante`
+### Módulo boot (`<artifactId>-boot`)
+Paquete base recomendado: `<base.package>`
 
 ```
 src/main/
-├── java/com/campusdual/stockrestaurante/
-│   └── StockRestauranteApplication.java  ← Clase main (@SpringBootApplication)
+├── java/<base/package>/
+│   └── <MainApplication>.java  ← Clase main (@SpringBootApplication)
 └── resources/
     └── application.yml            ← Configuración global
 ```
 
-### stockrestaurante-frontend (Angular)
+### Módulo frontend (`<artifactId>-frontend`) (Angular)
 ```
 src/app/
 ├── core/       ← Guards, interceptores HTTP, servicios de autenticación
