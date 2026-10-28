@@ -315,7 +315,7 @@ Conexion DBeaver para perfil `p`:
 3. Arranca con el perfil:
 
 ```powershell
-mvn -pl stockrestaurante-boot spring-boot:run -Dspring-boot.run.profiles=sp
+mvn -pl skeleton-fullstack-boot spring-boot:run -Dspring-boot.run.profiles=sp
 ```
 
 ## Endpoints de ejemplo

@@ -130,8 +130,8 @@ Si una regla de este documento no puede cumplirse, el registro del cambio debe i
 ```
 
 **Ejemplo de instancia concreta**:
-- `<project-root>` = `stock-restaurante`
-- `<artifactId>` = `stockrestaurante`
+- `<project-root>` = `skeleton-fullstack`
+- `<artifactId>` = `skeletonfullstack`
 
 ### Módulo model (`<artifactId>-model`)
 Paquete base recomendado: `<base.package>.model`

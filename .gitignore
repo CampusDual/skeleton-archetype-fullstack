@@ -242,14 +242,14 @@ __pycache__/
 .env
 *.pem
 
-/stockrestaurante-boot/target/*
-/stockrestaurante-api/target/*
-/stockrestaurante-model/target/*
-/stockrestaurante-ws/target/*
-/stockrestaurante-openapi/target/*
+/skeleton-fullstack-boot/target/*
+/skeleton-fullstack-api/target/*
+/skeleton-fullstack-model/target/*
+/skeleton-fullstack-ws/target/*
+/skeleton-fullstack-openapi/target/*
 
 # HSQLDB persistente local (perfil p)
 .local/
-stockrestaurante-boot/.local/
+skeleton-fullstack-boot/.local/
 
 # End of https://www.toptal.com/developers/gitignore/api/java,maven,angular,git,node

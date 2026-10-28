@@ -5,11 +5,11 @@ Este README se inyecta automáticamente en los proyectos generados desde el arqu
 ## ¿Qué incluye el arquetipo?
 
 - Estructura backend multi-módulo Spring Boot:
-  - `stockrestaurante-api`
-  - `stockrestaurante-model`
-  - `stockrestaurante-ws`
-  - `stockrestaurante-openapi`
-  - `stockrestaurante-boot`
+  - `skeleton-fullstack-api`
+  - `skeleton-fullstack-model`
+  - `skeleton-fullstack-ws`
+  - `skeleton-fullstack-openapi`
+  - `skeleton-fullstack-boot`
 - Carpeta frontend Angular nombrada con el `artifactId` del proyecto:
   - `<artifactId>-frontend`
 

@@ -12,12 +12,12 @@
     </parent>
 
     <groupId>com.campusdual</groupId>
-    <artifactId>stock-restaurante</artifactId>
+    <artifactId>skeleton-fullstack</artifactId>
     <version>99.9.9-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>stock-restaurante</name>
-    <description>Proyecto multi-modulo base para Stock Restaurante</description>
+    <name>Project fullstack</name>
+    <description>This project contains a pre-generated skeleton, useful for creating project from scratch. It contains an embedded HSQLDB database.</description>
 
     <modules>
         <module>skeleton-fullstack-api</module>

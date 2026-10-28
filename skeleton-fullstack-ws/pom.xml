@@ -6,7 +6,7 @@
 
     <parent>
         <groupId>com.campusdual</groupId>
-        <artifactId>stock-restaurante</artifactId>
+        <artifactId>skeleton-fullstack</artifactId>
         <version>99.9.9-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>

@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Stock Restaurante API (Copilot)
+  title: Skeleton Fullstack API (Copilot)
   version: 1.0.0
   description: >
     Especificacion OpenAPI mantenida manualmente para el dominio actual de gestion
