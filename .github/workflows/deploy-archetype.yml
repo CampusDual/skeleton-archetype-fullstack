@@ -189,17 +189,22 @@ jobs:
       - name: Deploy archetype
         run: |
           cd target/generated-sources/archetype
-          mvn -B install deploy -Pgenerate-version -Dmaven.repository.credentialScope=id
+          mvn -B install archetype:update-local-catalog deploy -Pgenerate-version -Dmaven.repository.credentialScope=id
       - name: Deploy custom version archetype
         if: "${{ github.event.inputs.custom-version != '' }}"
         run: |
           cd target/generated-sources/archetype
           mvn -B versions:set -DnewVersion=${{ github.event.inputs.custom-version }} versions:commit
-          mvn -B install deploy -Pgenerate-version -Dmaven.repository.credentialScope=id
+          mvn -B install archetype:update-local-catalog deploy -Pgenerate-version -Dmaven.repository.credentialScope=id
       - name: Generating fullstack from current archetype (Test)
         run: |
+          ARCH_ARTIFACT_ID=$(xmlstarlet sel -N x=http://maven.apache.org/POM/4.0.0 -t -v "/x:project/x:artifactId" target/generated-sources/archetype/pom.xml)
+          ARCH_GROUP_ID=$(xmlstarlet sel -N x=http://maven.apache.org/POM/4.0.0 -t -v "/x:project/x:groupId" target/generated-sources/archetype/pom.xml)
+          ARCH_VERSION=$(xmlstarlet sel -N x=http://maven.apache.org/POM/4.0.0 -t -v "/x:project/x:version" target/generated-sources/archetype/pom.xml)
+          echo "Usando arquetipo: ${ARCH_GROUP_ID}:${ARCH_ARTIFACT_ID}:${ARCH_VERSION}"
+          ls -la ~/.m2/repository/com/campusdual/
           cd /tmp
-          mvn -B archetype:generate -DarchetypeCatalog=local -DgroupId=com.campusdual -DartifactId=fullstacktest -Dversion=1.0.0-SNAPSHOT -Dpackage=com.campusdual.fullstacktest -DarchetypeGroupId=com.campusdual -DarchetypeArtifactId=skeleton-fullstack-archetype -DarchetypeVersion=99.9.9-SNAPSHOT -DinteractiveMode=false
+          mvn -B archetype:generate -DarchetypeCatalog=local -DarchetypeGroupId="${ARCH_GROUP_ID}" -DarchetypeArtifactId="${ARCH_ARTIFACT_ID}" -DarchetypeVersion="${ARCH_VERSION}" -DgroupId=com.campusdual -DartifactId=fullstacktest -Dversion=1.0.0-SNAPSHOT -Dpackage=com.campusdual.fullstacktest -DinteractiveMode=false
           tar -czvf fullstack.tar.gz fullstacktest/
       - name: Upload fullstack ready to download (Test)
         uses: actions/upload-artifact@v4
