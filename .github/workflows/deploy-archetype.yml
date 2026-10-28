@@ -88,9 +88,7 @@ jobs:
         run: |
           cd target/generated-sources/archetype
           FRONTEND_TEMPLATE_ROOT="src/main/resources/archetype-resources/__artifactId__-frontend"
-          mv src/main/resources/archetype-resources/skeleton-fullstack-frontend "${FRONTEND_TEMPLATE_ROOT}"
-          sed -i 's#skeleton-fullstack-frontend#__artifactId__-frontend#g' src/main/resources/META-INF/maven/archetype-metadata.xml
-          xmlstarlet ed --inplace -N x=http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.2.0 -i "/x:archetype-descriptor/x:fileSets/x:fileSet[x:directory='__artifactId__-frontend']" -t attr -n "filtered" -v "true" src/main/resources/META-INF/maven/archetype-metadata.xml
+          xmlstarlet ed --inplace -N x=http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.2.0 -u "/x:archetype-descriptor/x:fileSets/x:fileSet[x:directory='__artifactId__-frontend']/@filtered" -v "true" src/main/resources/META-INF/maven/archetype-metadata.xml || xmlstarlet ed --inplace -N x=http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.2.0 -i "/x:archetype-descriptor/x:fileSets/x:fileSet[x:directory='__artifactId__-frontend']" -t attr -n "filtered" -v "true" src/main/resources/META-INF/maven/archetype-metadata.xml
           sed -i 's/skeleton-fullstack-frontend/\${artifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/package.json"
           sed -i 's/skeleton-fullstack-frontend/\${artifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/package-lock.json"
           sed -i 's/skeleton-fullstack-frontend/\${artifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/angular.json"
