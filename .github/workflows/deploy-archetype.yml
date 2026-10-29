@@ -102,6 +102,7 @@ jobs:
           done
           find src/main/resources/archetype-resources/__rootArtifactId__-* -name "*.java" -type f -exec sed -i 's/\${package}\.skeletonfullstack\./\${package}./g' {} \;
           find src/main/resources/archetype-resources/__rootArtifactId__-* -name "*.java" -type f -exec sed -i 's/package \${package}\.skeletonfullstack;/package \${package};/g' {} \;
+          find src/main/resources/archetype-resources/.run -name "*.run.xml" -type f -exec sed -i 's/\${package}\.skeletonfullstack\.SkeletonFullstackApplication/\${package}.SkeletonFullstackApplication/g' {} \;
 
           sed -i 's/skeleton-fullstack-frontend/\${rootArtifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/package.json"
           sed -i 's/skeleton-fullstack-frontend/\${rootArtifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/package-lock.json"
