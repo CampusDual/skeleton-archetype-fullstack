@@ -65,7 +65,6 @@ jobs:
           xmlstarlet ed --inplace -N x=http://maven.apache.org/POM/4.0.0 -d "/x:project/x:properties/x:sonar.host.url" pom.xml
           rm -rf .github/workflows/
           rm -rf .idea/
-          rm -rf .run/
           rm -rf .local/
           rm -rf target/
           rm -rf skeleton-fullstack-boot/.local/
@@ -87,11 +86,26 @@ jobs:
       - name: Normalize archetype resources
         run: |
           cd target/generated-sources/archetype
-          FRONTEND_TEMPLATE_ROOT="src/main/resources/archetype-resources/__artifactId__-frontend"
-          xmlstarlet ed --inplace -N x=http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.2.0 -u "/x:archetype-descriptor/x:fileSets/x:fileSet[x:directory='__artifactId__-frontend']/@filtered" -v "true" src/main/resources/META-INF/maven/archetype-metadata.xml || xmlstarlet ed --inplace -N x=http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.2.0 -i "/x:archetype-descriptor/x:fileSets/x:fileSet[x:directory='__artifactId__-frontend']" -t attr -n "filtered" -v "true" src/main/resources/META-INF/maven/archetype-metadata.xml
-          sed -i 's/skeleton-fullstack-frontend/\${artifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/package.json"
-          sed -i 's/skeleton-fullstack-frontend/\${artifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/package-lock.json"
-          sed -i 's/skeleton-fullstack-frontend/\${artifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/angular.json"
+          METADATA_FILE="src/main/resources/META-INF/maven/archetype-metadata.xml"
+          if [ -d "src/main/resources/archetype-resources/__artifactId__-frontend" ]; then
+            mv "src/main/resources/archetype-resources/__artifactId__-frontend" "src/main/resources/archetype-resources/__rootArtifactId__-frontend"
+          fi
+          FRONTEND_TEMPLATE_ROOT="src/main/resources/archetype-resources/__rootArtifactId__-frontend"
+          sed -i 's/skeleton-fullstack-frontend/__rootArtifactId__-frontend/g' "${METADATA_FILE}"
+          xmlstarlet ed --inplace -N x=http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.2.0 -u "/x:archetype-descriptor/x:fileSets/x:fileSet[x:directory='__rootArtifactId__-frontend']/@filtered" -v "true" "${METADATA_FILE}" || xmlstarlet ed --inplace -N x=http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.2.0 -i "/x:archetype-descriptor/x:fileSets/x:fileSet[x:directory='__rootArtifactId__-frontend']" -t attr -n "filtered" -v "true" "${METADATA_FILE}"
+
+          for javaBase in src/main/resources/archetype-resources/__rootArtifactId__-*/src/main/java src/main/resources/archetype-resources/__rootArtifactId__-*/src/test/java; do
+            if [ -d "${javaBase}/skeletonfullstack" ]; then
+              find "${javaBase}/skeletonfullstack" -mindepth 1 -maxdepth 1 -exec mv {} "${javaBase}/" \;
+              rmdir "${javaBase}/skeletonfullstack"
+            fi
+          done
+          find src/main/resources/archetype-resources/__rootArtifactId__-* -name "*.java" -type f -exec sed -i 's/\${package}\.skeletonfullstack\./\${package}./g' {} \;
+          find src/main/resources/archetype-resources/__rootArtifactId__-* -name "*.java" -type f -exec sed -i 's/package \${package}\.skeletonfullstack;/package \${package};/g' {} \;
+
+          sed -i 's/skeleton-fullstack-frontend/\${rootArtifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/package.json"
+          sed -i 's/skeleton-fullstack-frontend/\${rootArtifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/package-lock.json"
+          sed -i 's/skeleton-fullstack-frontend/\${rootArtifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/angular.json"
       - name: Generate deploy pom.xml with xmlstarlet
         run: |
           cd target/generated-sources/archetype
