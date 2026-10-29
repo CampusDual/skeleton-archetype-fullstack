@@ -5,7 +5,7 @@
     <envs>
       <env name="spring.profiles.active" value="sp" />
     </envs>
-    <option name="MAIN_CLASS_NAME" value="com.campusdual.skeletonfullstack.SkeletonFullstackApplication" />
+    <option name="MAIN_CLASS_NAME" value="com.campusdual.skeletonfullstack.MainApplication" />
     <module name="skeleton-fullstack-boot" />
     <method v="2">
       <option name="Make" enabled="true" />

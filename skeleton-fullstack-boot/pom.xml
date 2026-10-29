@@ -93,7 +93,7 @@
                             <outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${project.basedir}/../skeleton-fullstack-openapi/src/main/resources</directory>
+                                    <directory>${project.parent.basedir}/${project.parent.artifactId}-openapi/src/main/resources</directory>
                                     <includes>
                                         <include>openapi-copilot.yaml</include>
                                     </includes>
@@ -141,9 +141,9 @@
                         </goals>
                         <configuration>
                             <target>
-                                <mkdir dir="${project.basedir}/../skeleton-fullstack-openapi/src/main/resources"/>
+                                <mkdir dir="${project.parent.basedir}/${project.parent.artifactId}-openapi/src/main/resources"/>
                                 <get src="http://localhost:8080/v3/api-docs.yaml"
-                                     dest="${project.basedir}/../skeleton-fullstack-openapi/src/main/resources/openapi.yaml"
+                                     dest="${project.parent.basedir}/${project.parent.artifactId}-openapi/src/main/resources/openapi.yaml"
                                      usetimestamp="false"/>
                             </target>
                         </configuration>

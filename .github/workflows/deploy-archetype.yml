@@ -103,8 +103,22 @@ jobs:
           done
           find src/main/resources/archetype-resources/__rootArtifactId__-* -name "*.java" -type f -exec sed -i 's/\${package}\.skeletonfullstack\./\${package}./g' {} \;
           find src/main/resources/archetype-resources/__rootArtifactId__-* -name "*.java" -type f -exec sed -i 's/package \${package}\.skeletonfullstack;/package \${package};/g' {} \;
-          sed -i 's/skeleton-fullstack-openapi/\${rootArtifactId}-openapi/g' src/main/resources/archetype-resources/__rootArtifactId__-boot/pom.xml
           find src/main/resources/archetype-resources/.run -name "*.run.xml" -type f -exec sed -i 's/\${package}\.skeletonfullstack\.SkeletonFullstackApplication/\${package}.SkeletonFullstackApplication/g' {} \;
+          find src/main/resources/archetype-resources/.run -name "*.run.xml" -type f -exec sed -i 's/\${package}\.skeletonfullstack\.MainApplication/\${package}.MainApplication/g' {} \;
+          find src/main/resources/archetype-resources/.run -name "*.run.xml" -type f -exec sed -i 's/name="P - SkeletonFullstackApplication"/name="P - \${rootArtifactId}Application"/g' {} \;
+          find src/main/resources/archetype-resources/.run -name "*.run.xml" -type f -exec sed -i 's/name="SP - SkeletonFullstackApplication"/name="SP - \${rootArtifactId}Application"/g' {} \;
+          find src/main/resources/archetype-resources/.run -name "*.run.xml" -type f -exec sed -i 's/name="V - SkeletonFullstackApplication"/name="V - \${rootArtifactId}Application"/g' {} \;
+          find src/main/resources/archetype-resources/.run -name "*.run.xml" -type f -exec sed -i 's/module name="skeleton-fullstack-boot"/module name="\${rootArtifactId}-boot"/g' {} \;
+          find src/main/resources/archetype-resources/.run -name "*.run.xml" -type f -exec sed -i 's/module name="\${artifactId}-boot"/module name="\${rootArtifactId}-boot"/g' {} \;
+          if [ -f "src/main/resources/archetype-resources/.run/P - SkeletonFullstackApplication.run.xml" ]; then
+            mv "src/main/resources/archetype-resources/.run/P - SkeletonFullstackApplication.run.xml" "src/main/resources/archetype-resources/.run/P - __rootArtifactId__Application.run.xml"
+          fi
+          if [ -f "src/main/resources/archetype-resources/.run/SP - SkeletonFullstackApplication.run.xml" ]; then
+            mv "src/main/resources/archetype-resources/.run/SP - SkeletonFullstackApplication.run.xml" "src/main/resources/archetype-resources/.run/SP - __rootArtifactId__Application.run.xml"
+          fi
+          if [ -f "src/main/resources/archetype-resources/.run/V - SkeletonFullstackApplication.run.xml" ]; then
+            mv "src/main/resources/archetype-resources/.run/V - SkeletonFullstackApplication.run.xml" "src/main/resources/archetype-resources/.run/V - __rootArtifactId__Application.run.xml"
+          fi
 
           sed -i 's/skeleton-fullstack-frontend/\${rootArtifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/package.json"
           sed -i 's/skeleton-fullstack-frontend/\${rootArtifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/package-lock.json"

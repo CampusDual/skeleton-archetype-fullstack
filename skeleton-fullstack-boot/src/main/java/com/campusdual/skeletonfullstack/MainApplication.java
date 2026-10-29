@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Punto de entrada principal de la aplicacion.
  */
 @SpringBootApplication
-public class SkeletonFullstackApplication {
+public class MainApplication {
 
     /**
      * Arranca el contexto de Spring Boot.
@@ -15,6 +15,6 @@ public class SkeletonFullstackApplication {
      * @param args argumentos de linea de comandos
      */
     public static void main(String[] args) {
-        SpringApplication.run(SkeletonFullstackApplication.class, args);
+        SpringApplication.run(MainApplication.class, args);
     }
 }
