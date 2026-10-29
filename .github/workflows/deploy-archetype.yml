@@ -92,7 +92,8 @@ jobs:
           fi
           FRONTEND_TEMPLATE_ROOT="src/main/resources/archetype-resources/__rootArtifactId__-frontend"
           sed -i 's/skeleton-fullstack-frontend/__rootArtifactId__-frontend/g' "${METADATA_FILE}"
-          xmlstarlet ed --inplace -N x=http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.2.0 -u "/x:archetype-descriptor/x:fileSets/x:fileSet[x:directory='__rootArtifactId__-frontend']/@filtered" -v "true" "${METADATA_FILE}" || xmlstarlet ed --inplace -N x=http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.2.0 -i "/x:archetype-descriptor/x:fileSets/x:fileSet[x:directory='__rootArtifactId__-frontend']" -t attr -n "filtered" -v "true" "${METADATA_FILE}"
+          xmlstarlet ed --inplace -N x=http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.2.0 -u "/x:archetype-descriptor/x:fileSets/x:fileSet[starts-with(x:directory,'__rootArtifactId__-frontend')]/@filtered" -v "true" "${METADATA_FILE}"
+          xmlstarlet ed --inplace -N x=http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.2.0 -i "/x:archetype-descriptor/x:fileSets/x:fileSet[starts-with(x:directory,'__rootArtifactId__-frontend') and not(@filtered)]" -t attr -n "filtered" -v "true" "${METADATA_FILE}"
 
           for javaBase in src/main/resources/archetype-resources/__rootArtifactId__-*/src/main/java src/main/resources/archetype-resources/__rootArtifactId__-*/src/test/java; do
             if [ -d "${javaBase}/skeletonfullstack" ]; then
@@ -105,11 +106,11 @@ jobs:
           sed -i 's/skeleton-fullstack-openapi/\${rootArtifactId}-openapi/g' src/main/resources/archetype-resources/__rootArtifactId__-boot/pom.xml
           find src/main/resources/archetype-resources/.run -name "*.run.xml" -type f -exec sed -i 's/\${package}\.skeletonfullstack\.SkeletonFullstackApplication/\${package}.SkeletonFullstackApplication/g' {} \;
 
-          sed -i 's/skeleton-fullstack-frontend/\${artifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/package.json"
-          sed -i 's/skeleton-fullstack-frontend/\${artifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/package-lock.json"
-          sed -i 's/skeleton-fullstack-frontend/\${artifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/angular.json"
-          sed -i 's/SkeletonFullstackFrontend/\${artifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/README.md"
-          sed -i 's/SkeletonFullstackFrontend/\${artifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/src/index.html"
+          sed -i 's/skeleton-fullstack-frontend/\${rootArtifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/package.json"
+          sed -i 's/skeleton-fullstack-frontend/\${rootArtifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/package-lock.json"
+          sed -i 's/skeleton-fullstack-frontend/\${rootArtifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/angular.json"
+          sed -i 's/SkeletonFullstackFrontend/\${rootArtifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/README.md"
+          sed -i 's/SkeletonFullstackFrontend/\${rootArtifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/src/index.html"
       - name: Generate deploy pom.xml with xmlstarlet
         run: |
           cd target/generated-sources/archetype
