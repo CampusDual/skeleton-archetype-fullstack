@@ -102,11 +102,14 @@ jobs:
           done
           find src/main/resources/archetype-resources/__rootArtifactId__-* -name "*.java" -type f -exec sed -i 's/\${package}\.skeletonfullstack\./\${package}./g' {} \;
           find src/main/resources/archetype-resources/__rootArtifactId__-* -name "*.java" -type f -exec sed -i 's/package \${package}\.skeletonfullstack;/package \${package};/g' {} \;
+          sed -i 's/skeleton-fullstack-openapi/\${rootArtifactId}-openapi/g' src/main/resources/archetype-resources/__rootArtifactId__-boot/pom.xml
           find src/main/resources/archetype-resources/.run -name "*.run.xml" -type f -exec sed -i 's/\${package}\.skeletonfullstack\.SkeletonFullstackApplication/\${package}.SkeletonFullstackApplication/g' {} \;
 
-          sed -i 's/skeleton-fullstack-frontend/\${rootArtifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/package.json"
-          sed -i 's/skeleton-fullstack-frontend/\${rootArtifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/package-lock.json"
-          sed -i 's/skeleton-fullstack-frontend/\${rootArtifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/angular.json"
+          sed -i 's/skeleton-fullstack-frontend/\${artifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/package.json"
+          sed -i 's/skeleton-fullstack-frontend/\${artifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/package-lock.json"
+          sed -i 's/skeleton-fullstack-frontend/\${artifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/angular.json"
+          sed -i 's/SkeletonFullstackFrontend/\${artifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/README.md"
+          sed -i 's/SkeletonFullstackFrontend/\${artifactId}-frontend/g' "${FRONTEND_TEMPLATE_ROOT}/src/index.html"
       - name: Generate deploy pom.xml with xmlstarlet
         run: |
           cd target/generated-sources/archetype
