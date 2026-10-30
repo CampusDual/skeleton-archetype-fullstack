@@ -213,7 +213,15 @@ jobs:
       - name: Deploy archetype
         run: |
           cd target/generated-sources/archetype
-          mvn -B clean deploy -Pgenerate-version -Dmaven.repository.credentialScope=id
+          mvn -B clean verify -Pgenerate-version -Dmaven.repository.credentialScope=id
+          
+          STAGING_DIR="target/central-staging/com/campusdual/skeleton-fullstack-archetype/${{ github.event.inputs.custom-version }}"
+          mkdir -p "${STAGING_DIR}"
+          cp pom.xml "${STAGING_DIR}/skeleton-fullstack-archetype-${{ github.event.inputs.custom-version }}.pom"
+          
+          gpg --batch --pinentry-mode loopback --passphrase "${MAVEN_GPG_PASSPHRASE}" -ab "${STAGING_DIR}/skeleton-fullstack-archetype-${{ github.event.inputs.custom-version }}.pom"
+          
+          mvn -B org.sonatype.central:central-publishing-maven-plugin:0.7.0:publish -Pgenerate-version -Dmaven.repository.credentialScope=id
 
       - name: Generating fullstack from current archetype (Test)
         run: |
