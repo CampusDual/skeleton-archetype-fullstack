@@ -1,4 +1,7 @@
 name: SNAPSHOT - Deploy Campus Dual fullstack archetype
+on:
+  workflow_dispatch:
+
 jobs:
   Deploy-Campus-Dual-fullstack-archetype:
     runs-on: ubuntu-latest
