@@ -7,7 +7,7 @@ on:
         description: 'Specific version'
         required: true
 jobs:
-  Deploy-Campus-Dual-fullstack-archetype:
+  RELEASE-Deploy-Campus-Dual-fullstack-archetype:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

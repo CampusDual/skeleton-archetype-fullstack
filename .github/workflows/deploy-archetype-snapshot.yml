@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  Deploy-Campus-Dual-fullstack-archetype:
+  SNAPSHOT-Deploy-Campus-Dual-fullstack-archetype:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
