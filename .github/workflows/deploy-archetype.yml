@@ -238,11 +238,10 @@ jobs:
           ls -la ~/.m2/repository/com/campusdual/
           cd /tmp
           mvn -B archetype:generate -DarchetypeCatalog=local -DarchetypeGroupId="${ARCH_GROUP_ID}" -DarchetypeArtifactId="${ARCH_ARTIFACT_ID}" -DarchetypeVersion="${ARCH_VERSION}" -DgroupId=com.campusdual -DartifactId=fullstacktest -Dversion=1.0.0-SNAPSHOT -Dpackage=com.campusdual.fullstacktest -DinteractiveMode=false
-          tar -czvf fullstack.tar.gz fullstacktest/
       - name: Upload fullstack ready to download (Test)
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
-          name: fullstack-zip
+          name: fullstack
+          path: /tmp/fullstacktest
+          include-hidden-files: true
           retention-days: 1
-          path: |
-            /tmp/fullstack.tar.gz
