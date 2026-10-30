@@ -220,15 +220,17 @@ jobs:
       - name: Deploy archetype
         run: |
           cd target/generated-sources/archetype
-          mvn -B install archetype:update-local-catalog deploy -Pgenerate-version -Dmaven.repository.credentialScope=id
+          mvn -B deploy -Pgenerate-version -Dmaven.repository.credentialScope=id
       - name: Deploy custom version archetype
         if: "${{ github.event.inputs.custom-version != '' }}"
         run: |
           cd target/generated-sources/archetype
           mvn -B versions:set -DnewVersion=${{ github.event.inputs.custom-version }} versions:commit
-          mvn -B install archetype:update-local-catalog deploy -Pgenerate-version -Dmaven.repository.credentialScope=id
+          mvn -B deploy -Pgenerate-version -Dmaven.repository.credentialScope=id
       - name: Generating fullstack from current archetype (Test)
         run: |
+          cd target/generated-sources/archetype
+          mvn -B install archetype:update-local-catalog -Pgenerate-version -Dmaven.repository.credentialScope=id
           ARCH_ARTIFACT_ID=$(xmlstarlet sel -N x=http://maven.apache.org/POM/4.0.0 -t -v "/x:project/x:artifactId" target/generated-sources/archetype/pom.xml)
           ARCH_GROUP_ID=$(xmlstarlet sel -N x=http://maven.apache.org/POM/4.0.0 -t -v "/x:project/x:groupId" target/generated-sources/archetype/pom.xml)
           ARCH_VERSION=$(xmlstarlet sel -N x=http://maven.apache.org/POM/4.0.0 -t -v "/x:project/x:version" target/generated-sources/archetype/pom.xml)
