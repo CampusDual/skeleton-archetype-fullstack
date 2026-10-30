@@ -153,6 +153,7 @@ runs:
         xmlstarlet ed --inplace -N x=http://maven.apache.org/POM/4.0.0 -s "/x:project/x:build/x:pluginManagement/x:plugins" -t elem -n "plugin" pom.xml
         xmlstarlet ed --inplace -N x=http://maven.apache.org/POM/4.0.0 -s "/x:project/x:build/x:pluginManagement/x:plugins/x:plugin[1]" -t elem -n "configuration" pom.xml
         xmlstarlet ed --inplace -N x=http://maven.apache.org/POM/4.0.0 -s "/x:project/x:build/x:pluginManagement/x:plugins/x:plugin[1]/x:configuration" -t elem -n "useDefaultExcludes" -v "false" pom.xml
+        xmlstarlet ed --inplace -N x=http://maven.apache.org/POM/4.0.0 -s "/x:project/x:build/x:pluginManagement/x:plugins" -t elem -n "plugin" pom.xml
         xmlstarlet ed --inplace -N x=http://maven.apache.org/POM/4.0.0 -s "/x:project/x:build/x:pluginManagement/x:plugins/x:plugin[2]" -t elem -n "groupId" -v "org.apache.maven.plugins" pom.xml
         xmlstarlet ed --inplace -N x=http://maven.apache.org/POM/4.0.0 -s "/x:project/x:build/x:pluginManagement/x:plugins/x:plugin[2]" -t elem -n "artifactId" -v "maven-deploy-plugin" pom.xml
         xmlstarlet ed --inplace -N x=http://maven.apache.org/POM/4.0.0 -s "/x:project/x:build/x:pluginManagement/x:plugins/x:plugin[2]" -t elem -n "version" -v "3.0.0-M1" pom.xml
@@ -223,15 +224,5 @@ runs:
         xmlstarlet ed --inplace -N x=http://maven.apache.org/POM/4.0.0 -s "/x:project/x:profiles/x:profile/x:build/x:plugins/x:plugin[4]/x:executions/x:execution" -t elem -n "goals" pom.xml
         xmlstarlet ed --inplace -N x=http://maven.apache.org/POM/4.0.0 -s "/x:project/x:profiles/x:profile/x:build/x:plugins/x:plugin[4]/x:executions/x:execution/x:goals" -t elem -n "goal" -v "sign" pom.xml
         xmlstarlet ed --inplace -N x=http://maven.apache.org/POM/4.0.0 -s "/x:project/x:profiles/x:profile/x:build/x:plugins/x:plugin[4]/x:executions/x:execution" -t elem -n "configuration" pom.xml
-        xmlstarlet ed --inplace -N x=http://maven.apache.org/POM/4.0.0 -s "/x:project/x:profiles/x:profile/x:build/x:plugins/x:plugin[4]/x:executions/x:execution/x:configuration" -t elem -n "gpgArguments"  pom.xml
-        xmlstarlet ed --inplace -N x=http://maven.apache.org/POM/4.0.0 -s "/x:project/x:profiles/x:profile/x:build/x:plugins/x:plugin[4]/x:executions/x:execution/x:configuration/x:gpgArguments" -t elem -n "arg" -v "--pinentry-mode" pom.xml
-        xmlstarlet ed --inplace -N x=http://maven.apache.org/POM/4.0.0 -s "/x:project/x:profiles/x:profile/x:build/x:plugins/x:plugin[4]/x:executions/x:execution/x:configuration/x:gpgArguments" -t elem -n "arg" -v "loopback" pom.xml
-        xmlstarlet ed --inplace -N x=http://maven.apache.org/POM/4.0.0 -s "/x:project/x:profiles/x:profile/x:build/x:plugins/x:plugin[4]/x:executions/x:execution/x:configuration" -t elem -n "keyname" -v "\${gpg.keyname}" pom.xml
-        xmlstarlet ed --inplace -N x=http://maven.apache.org/POM/4.0.0 -s "/x:project/x:profiles/x:profile/x:build/x:plugins/x:plugin[4]/x:executions/x:execution/x:configuration" -t elem -n "passphraseServerId" -v "\${gpg.passphrase}" pom.xml
-        xmlstarlet ed --inplace -N x=http://maven.apache.org/POM/4.0.0 -s "/x:project/x:profiles/x:profile/x:build/x:plugins/x:plugin[4]/x:executions/x:execution/x:configuration" -t elem -n "passphraseServerId" -v "\${gpg.passphrase}" pom.xml
-
-    - name: Deploy archetype
-      shell: bash
-      run: |
-        cd target/generated-sources/archetype
-        mvn -B clean deploy -Pgenerate-version -Dmaven.repository.credentialScope=id
+        xmlstarlet ed --inplace -N x=http://maven.apache.org/POM/4.0.0 -s "/x:project/x:profiles/x:profile/x:build/x:plugins/x:plugin[4]/x:executions/x:execution/x:configuration" -t elem -n "gpgArguments" pom.xml
+        xmlstarlet ed --inplace -N x=http://maven.apache.org/POM/4.0.0 -s "/x:project/x:profiles/x:profile/x:build/x:plugins/x:plugin[4]/x:executions/x:execution/x:configuration/x:gpgArguments" -t elem -n "arg" -v
