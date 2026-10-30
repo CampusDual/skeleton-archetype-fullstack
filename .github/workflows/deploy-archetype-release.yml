@@ -109,6 +109,8 @@ jobs:
           xmlstarlet ed --inplace -N x=http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.2.0 -i "/x:archetype-descriptor/x:fileSets/x:fileSet[starts-with(x:directory,'__rootArtifactId__-frontend') and not(@filtered)]" -t attr -n "filtered" -v "true" "${METADATA_FILE}"
           xmlstarlet ed --inplace -N x=http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.2.0 -u "/x:archetype-descriptor/x:fileSets/x:fileSet[x:includes/x:include='README.md' or x:includes/x:include='HELP.md']/@filtered" -v "true" "${METADATA_FILE}"
           xmlstarlet ed --inplace -N x=http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.2.0 -i "/x:archetype-descriptor/x:fileSets/x:fileSet[(x:includes/x:include='README.md' or x:includes/x:include='HELP.md') and not(@filtered)]" -t attr -n "filtered" -v "true" "${METADATA_FILE}"
+          xmlstarlet ed --inplace -N x=http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.2.0 -u "/x:archetype-descriptor/x:modules/x:module[@dir='__rootArtifactId__-boot']/x:fileSets/x:fileSet[x:directory='src/main/resources']/@filtered" -v "true" "${METADATA_FILE}"
+          xmlstarlet ed --inplace -N x=http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.2.0 -i "/x:archetype-descriptor/x:modules/x:module[@dir='__rootArtifactId__-boot']/x:fileSets/x:fileSet[x:directory='src/main/resources' and not(@filtered)]" -t attr -n "filtered" -v "true" "${METADATA_FILE}"
           for javaBase in src/main/resources/archetype-resources/__rootArtifactId__-*/src/main/java src/main/resources/archetype-resources/__rootArtifactId__-*/src/test/java; do
             if [ -d "${javaBase}/skeletonfullstack" ]; then
               find "${javaBase}/skeletonfullstack" -mindepth 1 -maxdepth 1 -exec mv {} "${javaBase}/" \;
@@ -117,6 +119,7 @@ jobs:
           done
           find src/main/resources/archetype-resources/__rootArtifactId__-* -name "*.java" -type f -exec sed -i 's/\${package}\.skeletonfullstack\./\${package}./g' {} \;
           find src/main/resources/archetype-resources/__rootArtifactId__-* -name "*.java" -type f -exec sed -i 's/package \${package}\.skeletonfullstack;/package \${package};/g' {} \;
+          sed -i 's/name: skeleton-fullstack/name: \${rootArtifactId}/g' src/main/resources/archetype-resources/__rootArtifactId__-boot/src/main/resources/application.yml
           find src/main/resources/archetype-resources/.run -name "*.run.xml" -type f -exec sed -i 's/\${package}\.skeletonfullstack\.SkeletonFullstackApplication/\${package}.SkeletonFullstackApplication/g' {} \;
           find src/main/resources/archetype-resources/.run -name "*.run.xml" -type f -exec sed -i 's/\${package}\.skeletonfullstack\.MainApplication/\${package}.MainApplication/g' {} \;
           find src/main/resources/archetype-resources/.run -name "*.run.xml" -type f -exec sed -i 's/name="P - SkeletonFullstackApplication"/name="P - \${rootArtifactId}Application"/g' {} \;
