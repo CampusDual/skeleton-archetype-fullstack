@@ -1,4 +1,4 @@
-# ${rootArtifactId} (guía rápida para alumnado)
+# ${rootArtifactId} (guía rápida)
 
 Este proyecto es una base completa con **backend Java (Spring Boot)**, **frontend Angular** y **base de datos**.  
 La idea es que puedas arrancarlo, probarlo y entender la estructura sin necesitar experiencia avanzada.
@@ -101,7 +101,7 @@ mvn -pl ${rootArtifactId}-boot spring-boot:run -Dspring-boot.run.profiles=sp
 > - En modo `p` (HSQLDB persistente): Suele resultar más práctico usar herramientas externas como **DBeaver**.
 > - En modo `sp` (PostgreSQL): Normalmente se utiliza **pgAdmin** o **DBeaver**.
 
-## Frontend: cómo lanzarlo desde Visual Studio Code
+## Frontend: cómo lanzarlo desde Visual Studio Code (cuando backend está arrancado)
 
 Abre una terminal en `${rootArtifactId}-frontend` y ejecuta:
 
@@ -120,13 +120,13 @@ Notas útiles:
 - El frontend tiene proxy configurado: las llamadas a `/api` se redirigen a `http://localhost:8080`.
 - Si backend no está levantado, el login mostrará error de conexión.
 
-## Usuario inicial para entrar (semilla automática)
+## Usuario inicial
 
 En el arranque se crea un usuario admin:
 - usuario: `admin`
 - contraseña: `admin1234`
 
-## Flujo recomendado para empezar (sin complicarte)
+## Flujo recomendado para empezar
 
 1. Arranca backend en modo `v`.
 2. Arranca frontend (`npm start`).
@@ -151,7 +151,7 @@ El proyecto incluye reglas específicas en:
 ```
 
 Ahí se define, entre otras cosas:
-- estructura esperada de módulos,
-- convenciones de código/documentación,
-- cómo mantener OpenAPI,
-- y reglas de ejecución en terminal para el equipo.
+- estructura esperada de módulos
+- convenciones de código/documentación
+- cómo mantener los ficheros de openapi
+- reglas de ejecución en terminal para el equipo

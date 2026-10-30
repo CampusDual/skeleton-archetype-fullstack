@@ -21,12 +21,12 @@ jobs:
         run: |
           echo "BRANCH=${{ github.ref }}" >> $GITHUB_ENV
       - name: Checkout repository code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ env.BRANCH }}
           fetch-depth: 0
       - name: Setup Java JDK and Maven
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '11'
@@ -240,7 +240,7 @@ jobs:
           mvn -B archetype:generate -DarchetypeCatalog=local -DarchetypeGroupId="${ARCH_GROUP_ID}" -DarchetypeArtifactId="${ARCH_ARTIFACT_ID}" -DarchetypeVersion="${ARCH_VERSION}" -DgroupId=com.campusdual -DartifactId=fullstacktest -Dversion=1.0.0-SNAPSHOT -Dpackage=com.campusdual.fullstacktest -DinteractiveMode=false
           tar -czvf fullstack.tar.gz fullstacktest/
       - name: Upload fullstack ready to download (Test)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: fullstack-zip
           retention-days: 1
