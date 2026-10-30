@@ -1,0 +1,85 @@
+name: Deploy Campus Dual fullstack archetype
+
+on:
+  workflow_dispatch:
+    inputs:
+      custom-version:
+        type: string
+        description: 'Optional. Specific release version (e.g. 1.0.0). SNAPSHOT (99.9.9-SNAPSHOT) will also be built.'
+        required: false
+
+jobs:
+  deploy-snapshot:
+    name: Deploy 99.9.9-SNAPSHOT Archetype
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      CI_COMMIT_AUTHOR: ${{ secrets.CI_COMMIT_AUTHOR }}
+      CI_COMMIT_MAIL: ${{ secrets.CI_COMMIT_MAIL }}
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: Build and Deploy Snapshot Archetype
+        uses: ./.github/actions/build-and-deploy-archetype
+        with:
+          maven-username: ${{ secrets.MAVEN_USERNAME }}
+          maven-central-token: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
+          maven-gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          maven-gpg-passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+
+      - name: Generating fullstack from current archetype (Test)
+        run: |
+          ARCH_ARTIFACT_ID=$(xmlstarlet sel -N x=http://maven.apache.org/POM/4.0.0 -t -v "/x:project/x:artifactId" target/generated-sources/archetype/pom.xml)
+          ARCH_GROUP_ID=$(xmlstarlet sel -N x=http://maven.apache.org/POM/4.0.0 -t -v "/x:project/x:groupId" target/generated-sources/archetype/pom.xml)
+          ARCH_VERSION=$(xmlstarlet sel -N x=http://maven.apache.org/POM/4.0.0 -t -v "/x:project/x:version" target/generated-sources/archetype/pom.xml)
+          echo "Usando arquetipo: ${ARCH_GROUP_ID}:${ARCH_ARTIFACT_ID}:${ARCH_VERSION}"
+          ls -la ~/.m2/repository/com/campusdual/
+          cd /tmp
+          mvn -B archetype:generate -DarchetypeCatalog=local \
+            -DarchetypeGroupId="${ARCH_GROUP_ID}" \
+            -DarchetypeArtifactId="${ARCH_ARTIFACT_ID}" \
+            -DarchetypeVersion="${ARCH_VERSION}" \
+            -DgroupId=com.campusdual \
+            -DartifactId=fullstacktest \
+            -Dversion=1.0.0-SNAPSHOT \
+            -Dpackage=com.campusdual.fullstacktest \
+            -DinteractiveMode=false
+
+      - name: Upload fullstack ready to download (Test)
+        uses: actions/upload-artifact@v4
+        with:
+          name: fullstack-windows-test
+          path: /tmp/fullstacktest
+          include-hidden-files: true
+          retention-days: 1
+
+  deploy-release:
+    name: Deploy Custom Release Archetype
+    if: "${{ github.event.inputs.custom-version != '' }}"
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      CI_COMMIT_AUTHOR: ${{ secrets.CI_COMMIT_AUTHOR }}
+      CI_COMMIT_MAIL: ${{ secrets.CI_COMMIT_MAIL }}
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: Set Release Version on source project
+        run: |
+          mvn -B versions:set -DnewVersion=${{ github.event.inputs.custom-version }} versions:commit
+
+      - name: Build and Deploy Release Archetype
+        uses: ./.github/actions/build-and-deploy-archetype
+        with:
+          maven-username: ${{ secrets.MAVEN_USERNAME }}
+          maven-central-token: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
+          maven-gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          maven-gpg-passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
