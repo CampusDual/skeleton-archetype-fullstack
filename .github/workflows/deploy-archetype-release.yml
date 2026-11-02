@@ -218,7 +218,7 @@ jobs:
           ARTIFACT_ID="skeleton-fullstack-archetype"
           GROUP_PATH="com/campusdual"
 
-          mvn -B clean verify -Pgenerate-version -Dmaven.repository.credentialScope=id
+          mvn -B clean install archetype:update-local-catalog -Pgenerate-version -Dmaven.repository.credentialScope=id
 
           BUNDLE_DIR="target/bundle/${GROUP_PATH}/${ARTIFACT_ID}/${VERSION}"
           mkdir -p "${BUNDLE_DIR}"
@@ -246,6 +246,7 @@ jobs:
 
           AUTH_HEADER=$(echo -n "${MAVEN_USERNAME}:${MAVEN_CENTRAL_TOKEN}" | base64 -w 0)
           RESPONSE=$(curl --silent --show-error --write-out "\nHTTP_STATUS:%{http_code}" --request POST --header "Authorization: Bearer ${AUTH_HEADER}" --form "bundle=@${GITHUB_WORKSPACE}/target/generated-sources/archetype/target/central-bundle.zip" "https://central.sonatype.com/api/v1/publisher/upload?publishingType=AUTOMATIC")
+
           echo "Respuesta de Sonatype: ${RESPONSE}"
 
           HTTP_CODE=$(echo "${RESPONSE}" | grep "HTTP_STATUS" | cut -d':' -f2)
