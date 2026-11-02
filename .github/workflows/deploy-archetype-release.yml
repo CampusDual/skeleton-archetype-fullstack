@@ -214,14 +214,9 @@ jobs:
         run: |
           cd target/generated-sources/archetype
           mvn -B clean verify -Pgenerate-version -Dmaven.repository.credentialScope=id
-          
-          STAGING_DIR="target/central-staging/com/campusdual/skeleton-fullstack-archetype/${{ github.event.inputs.custom-version }}"
-          mkdir -p "${STAGING_DIR}"
-          cp pom.xml "${STAGING_DIR}/skeleton-fullstack-archetype-${{ github.event.inputs.custom-version }}.pom"
-          
-          gpg --batch --pinentry-mode loopback --passphrase "${MAVEN_GPG_PASSPHRASE}" -ab "${STAGING_DIR}/skeleton-fullstack-archetype-${{ github.event.inputs.custom-version }}.pom"
-          
-          mvn -B org.sonatype.central:central-publishing-maven-plugin:0.7.0:publish -Pgenerate-version -Dmaven.repository.credentialScope=id
+          mvn -B install:install-file -Dfile=pom.xml -DpomFile=pom.xml -DgroupId=com.campusdual -DartifactId=skeleton-fullstack-archetype -Dversion=${{ github.event.inputs.custom-version }} -Dpackaging=pom -DlocalRepositoryPath=target/central-staging
+          gpg --batch --pinentry-mode loopback --passphrase "${MAVEN_GPG_PASSPHRASE}" -ab target/central-staging/com/campusdual/skeleton-fullstack-archetype/${{ github.event.inputs.custom-version }}/skeleton-fullstack-archetype-${{ github.event.inputs.custom-version }}.pom
+          mvn -B deploy -Pgenerate-version -Dmaven.repository.credentialScope=id
 
       - name: Generating fullstack from current archetype (Test)
         run: |
