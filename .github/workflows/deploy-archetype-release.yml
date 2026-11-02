@@ -213,10 +213,39 @@ jobs:
       - name: Deploy archetype
         run: |
           cd target/generated-sources/archetype
+
+          VERSION="${{ github.event.inputs.custom-version }}"
+          ARTIFACT_ID="skeleton-fullstack-archetype"
+          GROUP_PATH="com/campusdual"
+
           mvn -B clean verify -Pgenerate-version -Dmaven.repository.credentialScope=id
-          mvn -B install:install-file -Dfile=pom.xml -DpomFile=pom.xml -DgroupId=com.campusdual -DartifactId=skeleton-fullstack-archetype -Dversion=${{ github.event.inputs.custom-version }} -Dpackaging=pom -DlocalRepositoryPath=target/central-staging
-          gpg --batch --pinentry-mode loopback --passphrase "${MAVEN_GPG_PASSPHRASE}" -ab target/central-staging/com/campusdual/skeleton-fullstack-archetype/${{ github.event.inputs.custom-version }}/skeleton-fullstack-archetype-${{ github.event.inputs.custom-version }}.pom
-          mvn -B deploy -Pgenerate-version -Dmaven.repository.credentialScope=id
+
+          BUNDLE_DIR="target/bundle/${GROUP_PATH}/${ARTIFACT_ID}/${VERSION}"
+          mkdir -p "${BUNDLE_DIR}"
+
+          cp pom.xml "${BUNDLE_DIR}/${ARTIFACT_ID}-${VERSION}.pom"
+          gpg --batch --pinentry-mode loopback --passphrase "${MAVEN_GPG_PASSPHRASE}" -ab "${BUNDLE_DIR}/${ARTIFACT_ID}-${VERSION}.pom"
+
+          cp "target/${ARTIFACT_ID}-${VERSION}.jar" "${BUNDLE_DIR}/"
+          cp "target/${ARTIFACT_ID}-${VERSION}.jar.asc" "${BUNDLE_DIR}/"
+          cp "target/${ARTIFACT_ID}-${VERSION}-sources.jar" "${BUNDLE_DIR}/"
+          cp "target/${ARTIFACT_ID}-${VERSION}-sources.jar.asc" "${BUNDLE_DIR}/"
+          cp "target/${ARTIFACT_ID}-${VERSION}-javadoc.jar" "${BUNDLE_DIR}/"
+          cp "target/${ARTIFACT_ID}-${VERSION}-javadoc.jar.asc" "${BUNDLE_DIR}/"
+
+          cd "${BUNDLE_DIR}"
+          for file in *; do
+            if [[ ! "$file" =~ \.(md5|sha1)$ ]]; then
+              md5sum "$file" | cut -d ' ' -f 1 > "${file}.md5"
+              sha1sum "$file" | cut -d ' ' -f 1 > "${file}.sha1"
+            fi
+          done
+
+          cd "${GITHUB_WORKSPACE}/target/generated-sources/archetype/target/bundle"
+          zip -r ../central-bundle.zip com/
+
+          cd "${GITHUB_WORKSPACE}/target/generated-sources/archetype"
+          mvn -B org.sonatype.central:central-publishing-maven-plugin:0.7.0:publish -DpublishingServerId=central -DbundleFile=target/central-bundle.zip -DautoPublish=true
 
       - name: Generating fullstack from current archetype (Test)
         run: |
